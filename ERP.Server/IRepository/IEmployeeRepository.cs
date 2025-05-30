@@ -4,6 +4,7 @@
     {
         Task<IEnumerable<EmployeeDto>> GetAllAsync();
         Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync();
+        Task<EmployeeDto> GetByIdAsync(Guid id);
         Task<Employee> AddAsync(Employee employee);
     }
 }

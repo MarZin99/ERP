@@ -44,7 +44,7 @@ export default function Employee() {
       </div>
       {selectedEmployee && (
         <div className="employee-form">
-          <EmployeeForm employee={selectedEmployee} />
+          <EmployeeForm employeeId={selectedEmployee.id} />
         </div>
       )}
     </div>

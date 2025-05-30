@@ -21,7 +21,21 @@ public class EmployeeRepository : IEmployeeRepository
             .Include(e => e.Position)
             .Select(e => EmployeeMapper.ToDto(e));    
     }
+    public async Task<EmployeeDto> GetByIdAsync(Guid id)
+    {
+        var employee = await _context.Employees
+            .Include(e => e.Position)
+            .FirstOrDefaultAsync(e => e.Id == id);
 
+        if (employee == null)
+            {
+            throw new KeyNotFoundException($"Employee with ID {id} not found.");
+            }
+
+        return EmployeeMapper.ToDto(employee);
+
+
+    }
 
     public async Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync()
     {

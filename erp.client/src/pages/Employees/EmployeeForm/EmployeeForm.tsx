@@ -1,20 +1,51 @@
 
-import type { EmployeeType } from "../EmployeeList/EmployeeList";
+import { useEffect, useState } from "react";
 import "./EmployeeForm.scss";
+import type { EmployeeFormProps, EmployeeFormType } from "./EmployeeForm.types";
+import axios from "axios";
 
-type Props = {
-  employee: EmployeeType;
-};
+export default function EmployeeForm({ employeeId }: EmployeeFormProps) {
 
-export default function EmployeeForm({ employee }: Props) {
+  const [employee, setEmployee] = useState<EmployeeFormType>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+   useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get("https://localhost:7075/api/Employee/" + employeeId);
+        setEmployee(response.data);
+      } catch (err) {
+        setError("Nie udało się pobrać danych.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, [employeeId]);
+  
   return (
     <div className="employee-form-container">
-      <h2>Dane pracownika</h2>
-      <p><strong>ID:</strong> {employee.id}</p>
-      <p><strong>Imię i nazwisko:</strong> {employee.name}</p>
-      <p><strong>Stanowisko:</strong> {employee.position}</p>
-      <p><strong>Dział:</strong> {employee.department}</p>
-      {/* Można dodać więcej danych tutaj */}
+     {loading ? (
+      <div>Loading</div>
+    ) : error ? (
+      <div>{error}</div>
+    ) : employee ? (
+      <>
+        <h2>Dane pracownika</h2>
+        <p><strong>ID:</strong> {employee.id}</p>
+        <p><strong>Name:</strong> {employee.firstName}</p>
+        <p><strong>Last name:</strong> {employee.lastName}</p>
+        <p><strong>Position:</strong> {employee.position}</p>
+        <p><strong>Hire date:</strong> {new Date(employee.hireDate).toLocaleDateString()}</p>
+      </>
+    ) : (
+      <div>Brak danych pracownika.</div>
+    )}
+
+     
     </div>
   );
 }
