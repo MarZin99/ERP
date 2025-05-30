@@ -1,0 +1,27 @@
+.employee-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  &.split {
+    .employee-list {
+      width: 50%;
+    }
+
+    .employee-form {
+      width: 50%;
+      border-left: 1px solid #ccc;
+    }
+  }
+
+  .employee-list {
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+
+  .employee-form {
+    padding: 1rem;
+    background: #fafafa;
+    overflow-y: auto;
+  }
+}

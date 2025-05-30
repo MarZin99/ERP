@@ -1,0 +1,17 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__navbar {
+    flex: 1;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex:15;
+    overflow: auto;
+    padding: 16px;
+    overflow: hidden;
+  }
+}

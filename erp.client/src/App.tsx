@@ -1,25 +1,15 @@
-import './App.css';
-import axios from "axios"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./_layout/Layout";
+import Employee from "./pages/Employees/Employee";
 
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/employees" element={<Employee />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  );
 }
-
-const response = await axios.get("http://localhost:5000/api/employees");
-
-function App() {
-
-    console.log(response.data.toJson());
-
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-        </div>
-    );
-}
-
-export default App;
