@@ -13,11 +13,15 @@ public class EmployeeService : IEmployeeService
     {
         return await _employeeRepository.GetAllAsync();
     }
+
+    public async Task<EmployeeDto> GetByIdAsync(Guid id)
+    {
+        return await _employeeRepository.GetByIdAsync(id);
+    }
     public async Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync()
     {
         return await _employeeRepository.GetAllToListAsync();
     }
-
 
     public async Task<Employee> CreateAsync(Employee employee)
     {

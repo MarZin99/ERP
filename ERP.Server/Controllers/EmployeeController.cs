@@ -27,6 +27,13 @@ namespace ERP.Server.Controllers
             var employees = await _employeeService.GetAllToListAsync();
             return Ok(employees);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<EmployeeDto>> GetByIdList([FromRoute] Guid id)
+        {
+            var employees = await _employeeService.GetByIdAsync(id);
+            return Ok(employees);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Post(Employee employee)
