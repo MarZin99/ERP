@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using ERP.Server.Models;
+using ERP.Server.Services;
 
 namespace ERP.Server.Controllers
 {
@@ -8,25 +8,31 @@ namespace ERP.Server.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public EmployeeController(AppDbContext context)
+        private readonly IEmployeeService _employeeService;
+
+        public EmployeeController(IEmployeeService employeeService)
         {
-            _context = context;
+            _employeeService = employeeService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> Get()
+        public async Task<ActionResult<IEnumerable<EmployeeDto>>> Get()
         {
-            return await _context.Employees.Include(e => e.Position).ToListAsync();
+            var employees = await _employeeService.GetAllAsync();
+            return Ok(employees);
+        }
+        [HttpGet("list")]
+        public async Task<ActionResult<IEnumerable<EmployeeToListDto>>> GetToList()
+        {
+            var employees = await _employeeService.GetAllToListAsync();
+            return Ok(employees);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(Employee employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = employee.Id }, employee);
+            var created = await _employeeService.CreateAsync(employee);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
-
-    }   
+    }
 }
