@@ -1,32 +1,13 @@
 
-import { useEffect, useState } from "react";
 import "./EmployeeForm.scss";
-import type { EmployeeFormProps, EmployeeFormType } from "./EmployeeForm.types";
-import axios from "axios";
+import type { EmployeeFormProps } from "./EmployeeForm.types";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
+import { useEmployee } from "../../../data/employee.hook";
 
 export default function EmployeeForm({ employeeId }: EmployeeFormProps) {
 
-  const [employee, setEmployee] = useState<EmployeeFormType>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axios.get("https://localhost:7075/api/Employee/" + employeeId);
-        setEmployee(response.data);
-      } catch (err) {
-        setError("Nie udało się pobrać danych.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEmployees();
-  }, [employeeId]);
+  const { employee, loading, error } = useEmployee(employeeId);
   
   return (
     <div className="employee-form-container">
