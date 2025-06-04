@@ -1,5 +1,6 @@
 ﻿using ERP.Server.IRepository;
 using ERP.Server.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 public class PositionRepository : IPositionRepository
 {
@@ -10,8 +11,8 @@ public class PositionRepository : IPositionRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<PositionDTO>> GetAllAsync()
+    public async Task<IEnumerable<Position>> GetAllAsync()
     {
-        return _context.Positions.Select(e => PositionMapper.ToDto(e));    
+        return await _context.Positions.ToListAsync();
     }
 }
