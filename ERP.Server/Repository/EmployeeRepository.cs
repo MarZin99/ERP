@@ -1,10 +1,6 @@
-﻿using ERP.Server;
-using ERP.Server.IRepository;
+﻿using ERP.Server.IRepository;
 using ERP.Server.Mappers;
-using ERP.Server.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 public class EmployeeRepository : IEmployeeRepository
 {
@@ -15,13 +11,13 @@ public class EmployeeRepository : IEmployeeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
+    public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
     {
         return _context.Employees
             .Include(e => e.Position)
             .Select(e => EmployeeMapper.ToDto(e));    
     }
-    public async Task<EmployeeDto> GetByIdAsync(Guid id)
+    public async Task<EmployeeDTO> GetByIdAsync(Guid id)
     {
         var employee = await _context.Employees
             .Include(e => e.Position)
@@ -44,10 +40,27 @@ public class EmployeeRepository : IEmployeeRepository
             .Select(e => EmployeeMapper.ToListDto(e));
     }
 
-    public async Task<Employee> AddAsync(Employee employee)
+    public async Task<Employee> AddAsync(CreateEmployeeDTO employee)
     {
-        _context.Employees.Add(employee);
+        var employeeExists = await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+
+        if (employeeExists != null)
+        {
+            throw new ArgumentException($"Employee with ID {employee.Id} already exists.");
+        }
+ 
+        var newEmployee = new Employee {
+            Id = Guid.NewGuid(),
+            FirstName = employee.FirstName,
+            LastName = employee.LastName,
+            Email = employee.Email,
+            PositionId = employee.PositionId,
+            Position = await _context.Positions.FindAsync(employee.PositionId),
+            HireDate = employee.HireDate
+        };
+       
+        _context.Employees.Add(newEmployee);
         await _context.SaveChangesAsync();
-        return employee;
+        return newEmployee;
     }
 }

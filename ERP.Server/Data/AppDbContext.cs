@@ -1,4 +1,3 @@
-using ERP.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext

@@ -3,18 +3,17 @@
 public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
-
     public EmployeeService(IEmployeeRepository employeeRepository)
     {
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
+    public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
     {
         return await _employeeRepository.GetAllAsync();
     }
 
-    public async Task<EmployeeDto> GetByIdAsync(Guid id)
+    public async Task<EmployeeDTO> GetByIdAsync(Guid id)
     {
         return await _employeeRepository.GetByIdAsync(id);
     }
@@ -23,7 +22,7 @@ public class EmployeeService : IEmployeeService
         return await _employeeRepository.GetAllToListAsync();
     }
 
-    public async Task<Employee> CreateAsync(Employee employee)
+    public async Task<Employee> CreateAsync(CreateEmployeeDTO employee)
     {
         return await _employeeRepository.AddAsync(employee);
     }

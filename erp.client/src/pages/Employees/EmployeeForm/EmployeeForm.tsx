@@ -1,14 +1,30 @@
 
 import "./EmployeeForm.scss";
-import type { EmployeeFormProps } from "./EmployeeForm.types";
+import { employeeSchema, type EmployeeFormProps, type Employee } from "../../../models/EmployeeForm.types";
 import Button from "../../../components/Button/Button";
-import Input from "../../../components/Input/Input";
-import { useEmployee } from "../../../data/employee.hook";
+import { useAddEmployee, useEmployee } from "../../../_data/employee.hook";
+import { Form } from "../../../components/Form/Form";
+import { FormInput } from "../../../components/Form/FormInput/FormInput";
+import {type SubmitHandler } from "react-hook-form";
+import 'react-datepicker/dist/react-datepicker.css'
+import { FormDatePicker } from "../../../components/Form/FormDatePicker/FormDatePicker";
+import { usePositions } from "../../../_data/position.hook";
+import { FormSelect } from "../../../components/Form/FormSelect/FormSelect";
 
 export default function EmployeeForm({ employeeId }: EmployeeFormProps) {
 
   const { employee, loading, error } = useEmployee(employeeId);
-  
+  const { addEmployee } = useAddEmployee();
+  const { positions } = usePositions();
+
+const test= () => {
+  console.log(employee)
+}
+
+const onSubmit: SubmitHandler<Employee> = async (data) => {
+  await addEmployee(data);
+};
+
   return (
     <div className="employee-form-container">
       <div className="management-buttons-container">
@@ -29,17 +45,18 @@ export default function EmployeeForm({ employeeId }: EmployeeFormProps) {
     ) : error ? (
       <div>{error}</div>
     ) : employee ? (
-      <>
-        <h2>Dane pracownika</h2>
-        <Input name="ID" label="ID" value={employee.id} style={{maxWidth: "350px"}}></Input>
-        <Input name="Name" label="name" value={employee.firstName} style={{maxWidth: "350px"}}></Input>
-        <Input name="Last Name" label="lastName" value={employee.lastName} style={{maxWidth: "350px"}}></Input>
-        <Input name="Position" label="position" value={employee.position} style={{maxWidth: "350px"}}></Input>
-        <Input name="Hire date" label="hireDate" value={new Date(employee.hireDate).toLocaleDateString()} style={{maxWidth: "350px"}}></Input>
-      </>
+        <Form schema={employeeSchema} onSubmit={onSubmit} defaultValues={employee ?? {}}>
+            <FormInput name="id" label="ID" disabled/>
+            <FormInput name="firstName" label="Name"/>
+            <FormInput name="lastName" label="Last Name" />
+            <FormSelect name="position" label="Position" options={(positions ?? []).map(p => ({value: p.id, label: p.title }))} />
+            <FormDatePicker name="hireDate" label="Hire Date" />  {/*Replace data type to DATE not string*/}
+            <button type="submit">Save</button>
+        </Form>
     ) : (
       <div>No data</div>
     )}
+      <button onClick={() => test()}>test</button>
     </div>
   );
 }

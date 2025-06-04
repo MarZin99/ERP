@@ -2,11 +2,11 @@ import { useState } from "react";
 import EmployeeList from "./EmployeeList/EmployeeList";
 import EmployeeForm from "./EmployeeForm/EmployeeForm";
 import "./Employee.scss";
-import type { EmployeeListType } from "./EmployeeList/EmployeeList.types";
-import { useEmployeeList } from "../../data/employee.hook";
+import { useEmployeeList } from "../../_data/employee.hook";
+import type { EmployeeLite } from "../../models/EmployeeList.types";
 
 export default function Employee() {
-  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeListType | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeLite | null>(null);
 
   const { employees, loading, error } = useEmployeeList();
 
