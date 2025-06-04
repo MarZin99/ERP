@@ -1,4 +1,5 @@
 ﻿using ERP.Server.IRepository;
+using ERP.Server.Mappers;
 
 public class PositionService : IPositionService
 {
@@ -10,7 +11,8 @@ public class PositionService : IPositionService
 
     public async Task<IEnumerable<PositionDTO>> GetAllAsync()
     {
-        return await _positionRepository.GetAllAsync();
+        var positions = await _positionRepository.GetAllAsync();
+        return positions.Select(p => PositionMapper.ToDto(p));
     }
 }
 

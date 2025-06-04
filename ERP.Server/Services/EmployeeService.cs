@@ -1,4 +1,5 @@
 ﻿using ERP.Server.IRepository;
+using ERP.Server.Mappers;
 
 public class EmployeeService : IEmployeeService
 {
@@ -10,20 +11,25 @@ public class EmployeeService : IEmployeeService
 
     public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
     {
-        return await _employeeRepository.GetAllAsync();
+        var employees = await _employeeRepository.GetAllAsync();
+        return employees.Select(e => EmployeeMapper.ToDto(e));
     }
 
     public async Task<EmployeeDTO> GetByIdAsync(Guid id)
     {
-        return await _employeeRepository.GetByIdAsync(id);
+        var employee = await _employeeRepository.GetByIdAsync(id);
+        return EmployeeMapper.ToDto(employee);
     }
     public async Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync()
     {
-        return await _employeeRepository.GetAllToListAsync();
+        var employees = await _employeeRepository.GetAllAsync();
+        return employees.Select(e => EmployeeMapper.ToListDto(e));
     }
 
     public async Task<Employee> CreateAsync(CreateEmployeeDTO employee)
     {
-        return await _employeeRepository.AddAsync(employee);
+        var newEmployee = EmployeeMapper.ToEntity(employee);
+
+        return await _employeeRepository.AddAsync(newEmployee);
     }
 }

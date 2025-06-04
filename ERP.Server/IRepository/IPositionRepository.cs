@@ -2,6 +2,6 @@
 {
     public interface IPositionRepository
     {
-        Task<IEnumerable<PositionDTO>> GetAllAsync();
+        Task<IEnumerable<Position>> GetAllAsync();
     }
 }

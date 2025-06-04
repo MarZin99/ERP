@@ -31,5 +31,19 @@ namespace ERP.Server.Mappers
                 PositionName = employee.Position.Title,
             };
         }
+
+        public static Employee ToEntity(CreateEmployeeDTO employeeDto)
+        {
+            if (employeeDto == null) return null!;
+            return new Employee
+            {
+                Id = Guid.NewGuid(),
+                FirstName = employeeDto.FirstName,
+                LastName = employeeDto.LastName,
+                Email = employeeDto.Email,
+                HireDate = employeeDto.HireDate,
+                PositionId = employeeDto.PositionId,
+            };
+        }
     }
 }
