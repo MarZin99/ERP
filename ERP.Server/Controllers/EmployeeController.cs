@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ERP.Server.Models;
 using ERP.Server.Services;
 
 namespace ERP.Server.Controllers
@@ -16,7 +15,7 @@ namespace ERP.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDto>>> Get()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> Get()
         {
             var employees = await _employeeService.GetAllAsync();
             return Ok(employees);
@@ -28,7 +27,7 @@ namespace ERP.Server.Controllers
             return Ok(employees);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<EmployeeDto>> GetByIdList([FromRoute] Guid id)
+        public async Task<ActionResult<EmployeeDTO>> GetByIdList([FromRoute] Guid id)
         {
             var employees = await _employeeService.GetByIdAsync(id);
             return Ok(employees);
@@ -36,7 +35,7 @@ namespace ERP.Server.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(Employee employee)
+        public async Task<IActionResult> Post([FromBody] CreateEmployeeDTO employee)
         {
             var created = await _employeeService.CreateAsync(employee);
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);

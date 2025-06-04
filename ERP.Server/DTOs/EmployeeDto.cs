@@ -1,6 +1,4 @@
-using ERP.Server.Models;
-
-public class EmployeeDto
+public class EmployeeDTO
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -8,7 +6,17 @@ public class EmployeeDto
     public string Email { get; set; }
     public DateTime HireDate { get; set; }
     public Guid PositionId { get; set; }
-    public string Position { get; set; }
+    public PositionDTO Position { get; set; }
+}
+
+public class CreateEmployeeDTO
+{
+    public Guid Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public DateTime HireDate { get; set; }
+    public Guid PositionId { get; set; }
 }
 
 public class EmployeeToListDto
@@ -16,5 +24,5 @@ public class EmployeeToListDto
     public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Position { get; set; }
+    public string PositionName { get; set; }
 }

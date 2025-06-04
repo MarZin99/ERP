@@ -3,17 +3,18 @@ namespace ERP.Server.Mappers
 {
     public static class EmployeeMapper
     {
-        public static EmployeeDto ToDto(Employee employee)
+        public static EmployeeDTO ToDto(Employee employee)
         {
             if (employee == null) return null!;
 
-            return new EmployeeDto
+            return new EmployeeDTO
             {
                 Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Email = employee.Email,
-                Position = employee.Position.Title,
+                PositionId = employee.PositionId,
+                Position = PositionMapper.ToDto(employee.Position),
                 HireDate = employee.HireDate,
             };
         }
@@ -27,7 +28,7 @@ namespace ERP.Server.Mappers
                 Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Position = employee.Position.Title,
+                PositionName = employee.Position.Title,
             };
         }
     }

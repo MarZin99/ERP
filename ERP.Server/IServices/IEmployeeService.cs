@@ -1,10 +1,7 @@
-﻿using ERP.Server.Models;
-
-public interface IEmployeeService
+﻿public interface IEmployeeService
 {
-    Task<IEnumerable<EmployeeDto>> GetAllAsync();
-    Task<EmployeeDto> GetByIdAsync(Guid id);
+    Task<IEnumerable<EmployeeDTO>> GetAllAsync();
+    Task<EmployeeDTO> GetByIdAsync(Guid id);
     Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync();
-
-    Task<Employee> CreateAsync(Employee employee);
+    Task<Employee> CreateAsync(CreateEmployeeDTO employee);
 }

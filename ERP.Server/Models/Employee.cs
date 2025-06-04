@@ -1,5 +1,3 @@
-using ERP.Server.Models;
-
 public class Employee
 {
     public Guid Id { get; set; }

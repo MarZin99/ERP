@@ -1,5 +1,5 @@
 import "./EmployeeList.scss";
-import type { EmployeeListProps } from "./EmployeeList.types";
+import type { EmployeeListProps } from "../../../models/EmployeeList.types";
 
 
 export default function EmployeeList({ employees, onSelect, selected }: EmployeeListProps) {
@@ -22,7 +22,7 @@ export default function EmployeeList({ employees, onSelect, selected }: Employee
             >
               <td>{emp.firstName}</td>
               <td>{emp.lastName}</td>
-              <td>{emp.position}</td>
+              <td>{emp.positionName}</td>
             </tr>
           ))}
         </tbody>

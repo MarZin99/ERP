@@ -2,9 +2,9 @@
 {
     public interface IEmployeeRepository
     {
-        Task<IEnumerable<EmployeeDto>> GetAllAsync();
+        Task<IEnumerable<EmployeeDTO>> GetAllAsync();
         Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync();
-        Task<EmployeeDto> GetByIdAsync(Guid id);
-        Task<Employee> AddAsync(Employee employee);
+        Task<EmployeeDTO> GetByIdAsync(Guid id);
+        Task<Employee> AddAsync(CreateEmployeeDTO employee);
     }
 }
