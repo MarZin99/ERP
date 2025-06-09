@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Employee } from "../models/EmployeeForm.types";
+import type { AddEmployee, Employee } from "../models/EmployeeForm.types";
 
 const API_BASE_URL = "https://localhost:7075/api/employee";
 
@@ -13,7 +13,13 @@ export const fetchEmployeeById = async (id: string): Promise<Employee> => {
   return response.data;
 };
 
-export const createEmployee = async (data: Employee): Promise<Employee> => {
+export const createEmployee = async (data: AddEmployee): Promise<Employee> => {
   const response = await axios.post(API_BASE_URL, data);
+  return response.data;
+};
+
+export const updateEmployee = async (data: Employee): Promise<Employee> => {
+  console.log(API_BASE_URL, data)
+  const response = await axios.put(API_BASE_URL, data);
   return response.data;
 };

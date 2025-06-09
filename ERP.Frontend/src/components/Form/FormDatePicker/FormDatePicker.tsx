@@ -38,7 +38,7 @@ export const FormDatePicker = ({
           <DatePicker
             id={name}
             className={`input ${error ? "errorInput" : ""}`}
-            selected={new Date(field.value)}
+            selected={field.value ? new Date(field.value) : undefined}
             onChange={(date) => field.onChange(date)}
             placeholderText={placeholder}
           />

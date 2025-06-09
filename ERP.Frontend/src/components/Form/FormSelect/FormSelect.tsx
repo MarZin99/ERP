@@ -37,10 +37,9 @@ export const FormSelect = ({ name, label, options, ...rest }: FormSelectProps) =
           <select
             id={name}
             className={`input ${error ? "errorInput" : ""}`}
-            value={field.value.id}
+            value={field.value ?? ""}
             onChange={field.onChange}
           >
-            <option value="">Select an option</option>
             {options.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}

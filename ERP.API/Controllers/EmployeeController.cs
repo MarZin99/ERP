@@ -40,5 +40,12 @@ namespace ERP.API.Controllers
             var created = await _employeeService.CreateAsync(employee);
             return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] EmployeeDTO employee)
+        {
+            var created = await _employeeService.UpdateAsync(employee);
+            return Ok(created);
+        }
     }
 }

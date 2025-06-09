@@ -38,4 +38,10 @@ public class EmployeeRepository : IEmployeeRepository
         await _context.SaveChangesAsync();
         return employee;
     }
+    public async Task UpdateAsync(Employee employee)
+    {
+        _context.Employees.Update(employee);
+        await _context.SaveChangesAsync();
+    }
+
 }
