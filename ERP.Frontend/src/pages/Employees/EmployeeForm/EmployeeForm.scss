@@ -1,0 +1,17 @@
+
+.employee-form-container {
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0.5rem 0;
+  }
+}
+
+.management-buttons-container {
+  height: 40px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 5px;
+}

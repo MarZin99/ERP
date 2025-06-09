@@ -1,0 +1,25 @@
+.wrapper {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.errorInput {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 0.875rem;
+}
