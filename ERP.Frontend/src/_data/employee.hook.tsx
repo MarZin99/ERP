@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import type { Employee } from "../models/EmployeeForm.types";
-import { createEmployee, fetchEmployeeById, fetchEmployeesToList } from "../_services/employee.service";
+import { emptyEmployee, type AddEmployee, type Employee } from "../models/EmployeeForm.types";
+import { createEmployee, fetchEmployeeById, fetchEmployeesToList, updateEmployee } from "../_services/employee.service";
 import type { EmployeeLite } from "../models/EmployeeList.types";
 
-export const useEmployee = (id: string) => {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+export const useEmployee = (id: string | null) => {
+  const [employee, setEmployee] = useState<Employee | AddEmployee | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,12 +13,18 @@ export const useEmployee = (id: string) => {
       setLoading(true);
       setError(null);
 
-      try {
-        const data = await fetchEmployeeById(id);
-        setEmployee({...data, hireDate: new Date(data.hireDate)});
-      } catch (err) {
-        setError("Cannot get employee data:" + err);
-      } finally {
+      if(id) {
+        try {
+          const data = await fetchEmployeeById(id);
+          setEmployee({...data, hireDate: new Date(data.hireDate)});
+        } catch (err) {
+          setError("Cannot get employee data:" + err);
+        } finally {
+          setLoading(false);
+        }
+      }
+      else {
+        setEmployee(emptyEmployee);
         setLoading(false);
       }
     };
@@ -59,7 +65,7 @@ export const useAddEmployee = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addEmployee = async (employee: Employee) => {
+  const addEmployee = async (employee: AddEmployee) => {
     setLoading(true);
     setError(null);
     try {
@@ -73,5 +79,19 @@ export const useAddEmployee = () => {
     }
   };
 
-  return { addEmployee, loading, error };
+  const editEmployee = async (employee: Employee) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await updateEmployee(employee);
+      setLoading(false);
+      return data;
+    } catch (err) {
+      setError("Cannot add employee :" + err);
+      setLoading(false);
+      throw err;
+    }
+  };
+
+  return { addEmployee, editEmployee, loading, error };
 };

@@ -8,7 +8,7 @@ type EmployeeLite = {
 type EmployeeListProps = {
   employees: EmployeeLite[];
   onSelect: (employee: EmployeeLite) => void;
-  selected: EmployeeLite | null;
+  selectedID: string | null;
 };
 
 export type {EmployeeLite, EmployeeListProps}

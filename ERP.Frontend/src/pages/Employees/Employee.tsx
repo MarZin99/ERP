@@ -4,15 +4,30 @@ import EmployeeForm from "./EmployeeForm/EmployeeForm";
 import "./Employee.scss";
 import { useEmployeeList } from "../../_data/employee.hook";
 import type { EmployeeLite } from "../../models/EmployeeList.types";
+import Button from "../../components/Button/Button";
 
 export default function Employee() {
-  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeLite | null>(null);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
+  const [isCreatingEmployee, setIsCreatingEmployee] = useState<boolean>(false);
+
+  const splitScreen = isCreatingEmployee || selectedEmployeeId ? true : false;
 
   const { employees, loading, error } = useEmployeeList();
 
+  const addUser = () => {
+    setIsCreatingEmployee(true)
+    setSelectedEmployeeId(null)
+  }
+
+  const selectUser = (user: EmployeeLite) => {
+    setIsCreatingEmployee(false);
+    setSelectedEmployeeId(user.id);
+  }
+
   return (
-    <div className={`employee-container ${selectedEmployee ? "split" : ""}`}>
+    <div className={`employee-container ${splitScreen ? "split" : ""}`}>
       <div className="employee-list">
+        <Button text="Add User" onClick={addUser}/>
         {loading ? (
           <p>Ładowanie...</p>
         ) : error ? (
@@ -20,16 +35,17 @@ export default function Employee() {
         ) : employees && (
           <EmployeeList
             employees={employees}
-            onSelect={setSelectedEmployee}
-            selected={selectedEmployee}
+            onSelect={selectUser}
+            selectedID={selectedEmployeeId}
           />
         )}
       </div>
-      {selectedEmployee && (
+      
         <div className="employee-form">
-          <EmployeeForm employeeId={selectedEmployee.id} />
+          {selectedEmployeeId && (<EmployeeForm mode="edit" employeeId={selectedEmployeeId}  /> )}
+          {isCreatingEmployee && (<EmployeeForm mode="add" /> )}
         </div>
-      )}
+     
     </div>
   );
 }

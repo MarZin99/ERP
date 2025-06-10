@@ -2,7 +2,7 @@ import "./EmployeeList.scss";
 import type { EmployeeListProps } from "../../../models/EmployeeList.types";
 
 
-export default function EmployeeList({ employees, onSelect, selected }: EmployeeListProps) {
+export default function EmployeeList({ employees, onSelect, selectedID }: EmployeeListProps) {
   return (
     <div className="employee-list-scroll">
       <table className="employee-table">
@@ -17,7 +17,7 @@ export default function EmployeeList({ employees, onSelect, selected }: Employee
           {employees.map((emp) => (
             <tr
               key={emp.id}
-              className={selected?.id === emp.id ? "selected" : ""}
+              className={selectedID === emp.id ? "selected" : ""}
               onClick={() => onSelect(emp)}
             >
               <td>{emp.firstName}</td>
