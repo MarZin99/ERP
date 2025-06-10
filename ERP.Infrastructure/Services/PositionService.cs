@@ -1,5 +1,6 @@
 ﻿using ERP.API.IRepository;
 using ERP.API.Mappers;
+using ERP.Common.Results;
 
 public class PositionService : IPositionService
 {
@@ -9,10 +10,15 @@ public class PositionService : IPositionService
         _positionRepository = positionRepository;
     }
 
-    public async Task<IEnumerable<PositionDTO>> GetAllAsync()
+    public async Task<Result<IEnumerable<PositionDTO>>> GetAllAsync()
     {
-        var positions = await _positionRepository.GetAllAsync();
-        return positions.Select(p => PositionMapper.ToDto(p));
+        var pos = await _positionRepository.GetAllAsync();
+        if (pos == null || !pos.Any())
+            return Result.Failure<IEnumerable<PositionDTO>>("No positions found.");
+
+        var posDTO = pos.Select(p => PositionMapper.ToDto(p));
+
+        return Result.Success(posDTO);
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using ERP.API.IRepository;
 using ERP.API.Mappers;
+using ERP.Common.Results;
 
 public class EmployeeService : IEmployeeService
 {
@@ -9,41 +10,53 @@ public class EmployeeService : IEmployeeService
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
+    public async Task<Result<IEnumerable<EmployeeDTO>>> GetAllAsync()
     {
-        var employees = await _employeeRepository.GetAllAsync();
-        return employees.Select(e => EmployeeMapper.ToDto(e));
+        var emp = await _employeeRepository.GetAllAsync();
+        var empDTO = emp.Select(e => EmployeeMapper.ToDto(e));
+
+        return Result.Success(empDTO);
     }
 
-    public async Task<EmployeeDTO> GetByIdAsync(Guid id)
+    public async Task<Result<EmployeeDTO>> GetByIdAsync(Guid id)
     {
-        var employee = await _employeeRepository.GetByIdAsync(id);
-        return EmployeeMapper.ToDto(employee);
+        var emp = await _employeeRepository.GetByIdAsync(id);
+        if (emp == null)
+            return Result.Failure<EmployeeDTO>("Employee not found.");
+        var empDTO = EmployeeMapper.ToDto(emp);
+
+        return Result.Success(empDTO);
     }
-    public async Task<IEnumerable<EmployeeToListDto>> GetAllToListAsync()
+    public async Task<Result<IEnumerable<EmployeeToListDto>>> GetAllToListAsync()
     {
-        var employees = await _employeeRepository.GetAllAsync();
-        return employees.Select(e => EmployeeMapper.ToListDto(e));
+        var emp = await _employeeRepository.GetAllAsync();
+        var empDto = emp.Select(e => EmployeeMapper.ToListDto(e));
+
+        return Result.Success(empDto);
     }
 
-    public async Task<Employee> CreateAsync(CreateEmployeeDTO employee)
+    public async Task<Result<Employee>> CreateAsync(CreateEmployeeDTO employee)
     {
+        if (employee == null) return Result.Failure<Employee>("Employee data is required.");
+
         var newEmployee = EmployeeMapper.ToEntity(employee);
+        await _employeeRepository.AddAsync(newEmployee);
 
-        return await _employeeRepository.AddAsync(newEmployee);
+        return Result.Success(newEmployee);
     }
-    public async Task<Employee> UpdateAsync(EmployeeDTO employee)
+
+    public async Task<Result<Employee>> UpdateAsync(EmployeeDTO employee)
     {
-        var existingEmployee = await _employeeRepository.GetByIdAsync(employee.Id);
-        if (existingEmployee == null)
-            throw new KeyNotFoundException("Employee not found.");
+        var existingEmp = await _employeeRepository.GetByIdAsync(employee.Id);
+        if (existingEmp == null)
+            return Result.Failure<Employee>("Employee not found.");
 
-        existingEmployee.FirstName = employee.FirstName;
-        existingEmployee.LastName = employee.LastName;
-        existingEmployee.PositionId = employee.PositionId;
-        existingEmployee.HireDate = employee.HireDate;
+        existingEmp.FirstName = employee.FirstName;
+        existingEmp.LastName = employee.LastName;
+        existingEmp.PositionId = employee.PositionId;
+        existingEmp.HireDate = employee.HireDate;
 
-        await _employeeRepository.UpdateAsync(existingEmployee);
-        return existingEmployee;
+        await _employeeRepository.UpdateAsync(existingEmp);
+        return Result.Success(existingEmp);
     }
 }
