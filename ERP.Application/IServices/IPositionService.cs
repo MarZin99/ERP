@@ -1,4 +1,6 @@
-﻿public interface IPositionService
+﻿using ERP.Common.Results;
+
+public interface IPositionService
 {
-    Task<IEnumerable<PositionDTO>> GetAllAsync();
+    Task<Result<IEnumerable<PositionDTO>>> GetAllAsync();
 }

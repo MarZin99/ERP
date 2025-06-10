@@ -20,12 +20,14 @@ namespace ERP.API.Controllers
             var employees = await _employeeService.GetAllAsync();
             return Ok(employees);
         }
+
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<EmployeeToListDto>>> GetToList()
         {
             var employees = await _employeeService.GetAllToListAsync();
             return Ok(employees);
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDTO>> GetByIdList([FromRoute] Guid id)
         {
@@ -33,12 +35,11 @@ namespace ERP.API.Controllers
             return Ok(employees);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeDTO employee)
         {
             var created = await _employeeService.CreateAsync(employee);
-            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetByIdList), new { id = created.Data.Id }, created); //to refactor
         }
 
         [HttpPut]
