@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { emptyEmployee, type AddEmployee, type Employee } from "../models/EmployeeForm.types";
 import { createEmployee, fetchEmployeeById, fetchEmployeesToList, updateEmployee } from "../_services/employee.service";
 import type { EmployeeLite } from "../models/EmployeeList.types";
+import { toast } from 'react-toastify';
 
 export const useEmployee = (id: string | null) => {
   const [employee, setEmployee] = useState<Employee | AddEmployee | null>(null);
@@ -71,9 +72,11 @@ export const useAddEmployee = () => {
     try {
       const data = await createEmployee(employee);
       setLoading(false);
+      toast.success(`User ${employee.firstName} ${employee.lastName} created succesfully`);
       return data;
     } catch (err) {
       setError("Cannot add employee :" + err);
+      toast.error(`Error: ${err}`);
       setLoading(false);
       throw err;
     }
@@ -85,9 +88,11 @@ export const useAddEmployee = () => {
     try {
       const data = await updateEmployee(employee);
       setLoading(false);
+      toast.success(`User ${data.firstName} ${data.lastName} edited succesfully`); 
       return data;
     } catch (err) {
-      setError("Cannot add employee :" + err);
+      setError("Cannot edit employee :" + err);
+      toast.error(`Error: ${err}`);
       setLoading(false);
       throw err;
     }
