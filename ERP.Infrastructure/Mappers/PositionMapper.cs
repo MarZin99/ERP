@@ -1,19 +1,15 @@
-﻿
-
-namespace ERP.API.Mappers
+﻿public static class PositionMapper
 {
-    public static class PositionMapper
+    public static PositionDTO ToDto(Position position)
     {
-        public static PositionDTO ToDto(Position position)
-        {
-            if (position == null) return null!;
+        if (position == null) return null!;
 
-            return new PositionDTO
-            {
-                Id = position.Id,
-                Title = position.Title,
-                BaseSalary = position.BaseSalary,
-            };
-        }
+        return new PositionDTO
+        {
+            Id = position.Id,
+            Title = position.Title,
+            BaseSalary = position.BaseSalary,
+        };
     }
 }
+

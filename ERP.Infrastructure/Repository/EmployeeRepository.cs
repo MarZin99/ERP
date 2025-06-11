@@ -1,5 +1,4 @@
 ﻿using ERP.API.IRepository;
-using ERP.API.Mappers;
 using ERP.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,11 +22,6 @@ public class EmployeeRepository : IEmployeeRepository
         var employee = await _context.Employees
             .Include(e => e.Position)
             .FirstOrDefaultAsync(e => e.Id == id);
-
-        if (employee == null)
-        {
-            throw new KeyNotFoundException($"Employee with ID {id} not found.");
-        }
 
         return employee;
     }
