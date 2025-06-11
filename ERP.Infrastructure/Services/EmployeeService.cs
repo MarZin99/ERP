@@ -1,5 +1,4 @@
 ﻿using ERP.API.IRepository;
-using ERP.API.Mappers;
 using ERP.Common.Results;
 
 public class EmployeeService : IEmployeeService
@@ -22,7 +21,7 @@ public class EmployeeService : IEmployeeService
     {
         var emp = await _employeeRepository.GetByIdAsync(id);
         if (emp == null)
-            return Result.Failure<EmployeeDTO>("Employee not found.");
+            return Result.Failure<EmployeeDTO>($"Employee with ID {id} not found.");
         var empDTO = EmployeeMapper.ToDto(emp);
 
         return Result.Success(empDTO);
